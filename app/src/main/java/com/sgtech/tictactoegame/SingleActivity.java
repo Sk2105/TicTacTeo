@@ -1,5 +1,6 @@
 package com.sgtech.tictactoegame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -12,6 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 import java.util.Objects;
 import java.util.Random;
@@ -26,6 +34,22 @@ public class SingleActivity extends AppCompatActivity {
     LinearLayout lin1, lin2;
     int[][] winningArray = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 4, 8}, {2, 4, 6}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
     String gameMode;
+    RewardedInterstitialAd ad;
+    String adId = "ca-app-pub-3397903282571414/4124764729";
+
+    public void exitDialog() {
+        new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
+                " sure you can exit").setNegativeButton("No", (dialog, which) -> dialog.dismiss()).setPositiveButton("Exit", (dialog, which) -> {
+            try {
+                showAd();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                dialog.dismiss();
+                finish();
+            }
+        }).create().show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +70,7 @@ public class SingleActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
-                " sure you can exit").setNegativeButton("No", (dialog, which) -> dialog.dismiss()).setPositiveButton("Exit", (dialog, which) -> {
-            dialog.dismiss();
-            finish();
-        }).create().show();
+        exitDialog();
     }
 
     private void findId() {
@@ -76,6 +96,7 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void cleanCode() {
+        new Handler().postDelayed(this::loadAd, 4000);
         txt1.setText("");
         txt2.setText("");
         txt3.setText("");
@@ -92,15 +113,18 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void restart(View view) {
-        cleanCode();
+        try {
+            showAd();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cleanCode();
+        }
+
     }
 
     public void exit(View view) {
-        new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
-                " sure you can exit").setNegativeButton("No", (dialog, which) -> dialog.dismiss()).setPositiveButton("Exit", (dialog, which) -> {
-            dialog.dismiss();
-            finish();
-        }).create().show();
+        exitDialog();
     }
 
 
@@ -123,9 +147,9 @@ public class SingleActivity extends AppCompatActivity {
             } finally {
                 if (i < 9 && !startGame) {
                     if (Objects.equals(gameMode, "H")) {
-                        new Handler().postDelayed(this::startAI, 400);
+                        new Handler().postDelayed(this::startAI, 600);
                     } else {
-                        new Handler().postDelayed(this::randomCall, 400);
+                        new Handler().postDelayed(this::randomCall, 600);
                     }
                 }
             }
@@ -208,8 +232,14 @@ public class SingleActivity extends AppCompatActivity {
     private void dialog(String t) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setPositiveButton("Play " +
                 "Again", (dialog, which) -> {
-            dialog.dismiss();
-            cleanCode();
+            try {
+                showAd();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                dialog.dismiss();
+                cleanCode();
+            }
         });
         if (t.equals("X")) {
             builder.setTitle("Congratulations").setMessage("You are win the match").create().show();
@@ -243,5 +273,56 @@ public class SingleActivity extends AppCompatActivity {
     public void setDrawable(int d1, int d2) {
         lin1.setBackgroundDrawable(getResources().getDrawable(d1));
         lin2.setBackgroundDrawable(getResources().getDrawable(d2));
+    }
+
+    public void loadAd() {
+        RewardedInterstitialAd.load(this, adId, new AdRequest.Builder().build(),
+                new RewardedInterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        ad = null;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
+                        super.onAdLoaded(rewardedInterstitialAd);
+                        ad = rewardedInterstitialAd;
+                        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                            }
+                        });
+                    }
+                });
+    }
+
+    public void showAd() {
+        if (ad != null) {
+            ad.show(this, rewardItem -> {
+
+            });
+        }
     }
 }

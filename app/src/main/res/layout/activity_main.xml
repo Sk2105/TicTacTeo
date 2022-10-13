@@ -6,6 +6,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/title"
         style="@style/title_textStyle"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
@@ -29,15 +30,19 @@
         android:id="@+id/multy"
         style="@style/btn_style"
         android:layout_width="match_parent"
-        android:background="@drawable/btn_green"
         android:text="@string/multi_player" />
 
     <Button
         android:id="@+id/single"
         style="@style/btn_style"
         android:layout_width="match_parent"
-        android:background="@drawable/btn_red"
         android:text="@string/single_player" />
 
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3397903282571414/2428539675" />
 
 </LinearLayout>

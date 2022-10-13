@@ -8,13 +8,11 @@
     <Button
         android:id="@+id/easy"
         style="@style/btn_style"
-        android:background="@drawable/btn_green"
         android:text="@string/easy" />
 
 
     <Button
         android:id="@+id/hard"
         style="@style/btn_style"
-        android:background="@drawable/btn_red"
         android:text="@string/hard" />
 </LinearLayout>

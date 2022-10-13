@@ -4,21 +4,26 @@
     style="@style/layout"
     tools:context=".MultiActivity">
 
-
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="8dp"
         android:layout_above="@id/btn5"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/box_shape" />
+        android:background="@drawable/line2" />
 
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="8dp"
+        android:layout_below="@id/btn5"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/line2" />
 
     <RelativeLayout
         android:layout_width="8dp"
         android:layout_height="300dp"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/btn5"
-        android:background="@drawable/box_shape" />
+        android:background="@drawable/line" />
 
 
     <RelativeLayout
@@ -26,15 +31,7 @@
         android:layout_height="300dp"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/btn5"
-        android:background="@drawable/box_shape" />
-
-
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="8dp"
-        android:layout_below="@id/btn5"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/box_shape" />
+        android:background="@drawable/line" />
 
 
     <RelativeLayout
@@ -214,7 +211,6 @@
             android:id="@+id/restart"
             style="@style/btn_style"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_green"
             android:onClick="restart"
             android:text="@string/restart" />
 
@@ -222,7 +218,6 @@
             style="@style/btn_style"
             android:layout_centerInParent="true"
             android:layout_toEndOf="@id/restart"
-            android:background="@drawable/btn_red"
             android:onClick="exit"
             android:text="@string/exit" />
 

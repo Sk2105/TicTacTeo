@@ -1,12 +1,22 @@
 package com.sgtech.tictactoegame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.graphics.Shader;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 
 public class MultiActivity extends AppCompatActivity {
@@ -20,6 +30,8 @@ public class MultiActivity extends AppCompatActivity {
     int player_1 = 1;
     int player_2 = 0;
     int actionPlayer = player_1;
+    RewardedInterstitialAd ad;
+    String adId= "ca-app-pub-3397903282571414/1641824196";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +68,11 @@ public class MultiActivity extends AppCompatActivity {
         lin2 = findViewById(R.id.lin2);
         setDrawable(R.drawable.icon_bg, R.drawable.gray_box);
         txt = new TextView[]{txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
+
     }
 
     public void cleanCode() {
+        new Handler().postDelayed(this::loadAd, 4000);
         txt1.setText("");
         txt2.setText("");
         txt3.setText("");
@@ -80,8 +94,14 @@ public class MultiActivity extends AppCompatActivity {
     public void exitDialog() {
         new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
                 " sure you can exit").setNegativeButton("No", (dialog, which) -> dialog.dismiss()).setPositiveButton("Exit", (dialog, which) -> {
-            dialog.dismiss();
-            finish();
+            try {
+                showAd();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                dialog.dismiss();
+                finish();
+            }
         }).create().show();
     }
 
@@ -137,8 +157,14 @@ public class MultiActivity extends AppCompatActivity {
 
         if (i == 9 && tagFiled != tagArray) {
             new AlertDialog.Builder(this).setPositiveButton("Play Again", (dialog, which) -> {
-                dialog.dismiss();
-                cleanCode();
+                try {
+                    showAd();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    dialog.dismiss();
+                    cleanCode();
+                }
             }).setTitle("Match Draw").setMessage("Play Again").create().show();
         }
     }
@@ -147,8 +173,14 @@ public class MultiActivity extends AppCompatActivity {
     private void dialog(String t) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setPositiveButton("Play " +
                 "Again", (dialog, which) -> {
-            dialog.dismiss();
-            cleanCode();
+            try {
+                showAd();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                dialog.dismiss();
+                cleanCode();
+            }
         }).setTitle("Congratulations");
         if (t.equals("X")) {
             builder.setMessage("Player 1 is win the match").create().show();
@@ -161,5 +193,56 @@ public class MultiActivity extends AppCompatActivity {
     public void setDrawable(int d1, int d2) {
         lin1.setBackgroundDrawable(getResources().getDrawable(d1));
         lin2.setBackgroundDrawable(getResources().getDrawable(d2));
+    }
+
+    public void loadAd() {
+        RewardedInterstitialAd.load(this, adId, new AdRequest.Builder().build(),
+                new RewardedInterstitialAdLoadCallback() {
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                ad = null;
+            }
+
+            @Override
+            public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
+                super.onAdLoaded(rewardedInterstitialAd);
+                ad = rewardedInterstitialAd;
+                ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdClicked() {
+                        super.onAdClicked();
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                        super.onAdFailedToShowFullScreenContent(adError);
+                    }
+
+                    @Override
+                    public void onAdImpression() {
+                        super.onAdImpression();
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        super.onAdShowedFullScreenContent();
+                    }
+                });
+            }
+        });
+    }
+
+    public void showAd() {
+        if (ad != null) {
+            ad.show(this, rewardItem -> {
+
+            });
+        }
     }
 }
