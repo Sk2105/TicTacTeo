@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/layout"
+    tools:context=".SingleActivity">
+
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="8dp"
+        android:layout_above="@id/btn5"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/box_shape" />
+
+
+    <RelativeLayout
+        android:layout_width="8dp"
+        android:layout_height="300dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/btn5"
+        android:background="@drawable/box_shape" />
+
+
+    <RelativeLayout
+        android:layout_width="8dp"
+        android:layout_height="300dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/btn5"
+        android:background="@drawable/box_shape" />
+
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="8dp"
+        android:layout_below="@id/btn5"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/box_shape" />
+
+
+    <RelativeLayout
+        android:id="@+id/btn4"
+        style="@style/box_layout"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@id/btn5">
+
+        <TextView
+            android:id="@+id/txt4"
+            style="@style/txt_box_style"
+            android:tag="4" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn6"
+        style="@style/box_layout"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/btn5">
+
+        <TextView
+            android:id="@+id/txt6"
+            style="@style/txt_box_style"
+            android:tag="6" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn5"
+        style="@style/box_layout"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/txt5"
+            style="@style/txt_box_style"
+            android:tag="5" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn9"
+        style="@style/box_layout"
+        android:layout_below="@id/btn6"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_toEndOf="@id/btn8">
+
+        <TextView
+            android:id="@+id/txt9"
+            style="@style/txt_box_style"
+            android:tag="9" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn7"
+        style="@style/box_layout"
+        android:layout_below="@id/btn4"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/btn8">
+
+        <TextView
+            android:id="@+id/txt7"
+            style="@style/txt_box_style"
+            android:tag="7" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn8"
+        style="@style/box_layout"
+        android:layout_below="@id/btn5"
+        android:layout_margin="20dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/txt8"
+            style="@style/txt_box_style"
+            android:tag="8" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/box_layout"
+        android:layout_above="@id/btn5"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toEndOf="@id/btn2">
+
+        <TextView
+            android:id="@+id/txt3"
+            style="@style/txt_box_style"
+            android:tag="3" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn1"
+        style="@style/box_layout"
+        android:layout_above="@id/btn5"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@id/btn2">
+
+        <TextView
+            android:id="@+id/txt1"
+            style="@style/txt_box_style"
+            android:tag="1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn2"
+        style="@style/box_layout"
+        android:layout_above="@id/btn5"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:id="@+id/txt2"
+            style="@style/txt_box_style"
+            android:tag="2" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/lin1"
+            style="@style/icon_style"
+            android:layout_centerVertical="true">
+
+
+            <TextView
+                android:id="@+id/you"
+                style="@style/title_textStyle"
+                android:text="@string/you" />
+
+            <TextView
+                android:id="@+id/x"
+                style="@style/txt_textStyle"
+                android:text="@string/x" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin2"
+            style="@style/icon_style"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/lin1"
+            android:background="@drawable/gray_box">
+
+
+            <TextView
+                android:id="@+id/com"
+                style="@style/title_textStyle"
+                android:text="@string/ai" />
+
+            <TextView
+                android:id="@+id/o"
+                style="@style/txt_textStyle"
+                android:text="@string/o" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/restart"
+            style="@style/btn_style"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_green"
+            android:onClick="restart"
+            android:text="@string/restart" />
+
+        <Button
+            style="@style/btn_style"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/restart"
+            android:background="@drawable/btn_red"
+            android:onClick="exit"
+            android:text="@string/exit" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
