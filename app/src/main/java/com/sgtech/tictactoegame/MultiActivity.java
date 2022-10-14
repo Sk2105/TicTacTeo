@@ -31,7 +31,8 @@ public class MultiActivity extends AppCompatActivity {
     int player_2 = 0;
     int actionPlayer = player_1;
     RewardedInterstitialAd ad;
-    String adId= "ca-app-pub-3397903282571414/1641824196";
+    String adId = "ca-app-pub-3397903282571414/1641824196";
+    boolean showAds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +69,15 @@ public class MultiActivity extends AppCompatActivity {
         lin2 = findViewById(R.id.lin2);
         setDrawable(R.drawable.icon_bg, R.drawable.gray_box);
         txt = new TextView[]{txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
-
+        showAds = true;
     }
 
     public void cleanCode() {
-        new Handler().postDelayed(this::loadAd, 4000);
+        if (showAds) {
+            showAds = false;
+            new Handler().postDelayed(this::loadAd, 4000);
+        }
+
         txt1.setText("");
         txt2.setText("");
         txt3.setText("");
@@ -198,50 +203,50 @@ public class MultiActivity extends AppCompatActivity {
     public void loadAd() {
         RewardedInterstitialAd.load(this, adId, new AdRequest.Builder().build(),
                 new RewardedInterstitialAdLoadCallback() {
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                ad = null;
-            }
-
-            @Override
-            public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
-                super.onAdLoaded(rewardedInterstitialAd);
-                ad = rewardedInterstitialAd;
-                ad.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
-                    public void onAdClicked() {
-                        super.onAdClicked();
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        ad = null;
                     }
 
                     @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                    }
+                    public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
+                        super.onAdLoaded(rewardedInterstitialAd);
+                        ad = rewardedInterstitialAd;
+                        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                            }
 
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                        super.onAdFailedToShowFullScreenContent(adError);
-                    }
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                            }
 
-                    @Override
-                    public void onAdImpression() {
-                        super.onAdImpression();
-                    }
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                            }
 
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        super.onAdShowedFullScreenContent();
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     public void showAd() {
         if (ad != null) {
             ad.show(this, rewardItem -> {
-
+                showAds = true;
             });
         }
     }

@@ -36,6 +36,7 @@ public class SingleActivity extends AppCompatActivity {
     String gameMode;
     RewardedInterstitialAd ad;
     String adId = "ca-app-pub-3397903282571414/4124764729";
+    boolean showAds;
 
     public void exitDialog() {
         new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
@@ -91,12 +92,17 @@ public class SingleActivity extends AppCompatActivity {
         lin1 = findViewById(R.id.lin1);
         lin2 = findViewById(R.id.lin2);
         startGame = true;
+        showAds = true;
         setDrawable(R.drawable.icon_bg, R.drawable.gray_box);
         txt = new TextView[]{txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
     }
 
     public void cleanCode() {
-        new Handler().postDelayed(this::loadAd, 4000);
+        if (showAds) {
+            showAds = false;
+            new Handler().postDelayed(this::loadAd, 4000);
+        }
+
         txt1.setText("");
         txt2.setText("");
         txt3.setText("");
@@ -326,9 +332,7 @@ public class SingleActivity extends AppCompatActivity {
 
     public void showAd() {
         if (ad != null) {
-            ad.show(this, rewardItem -> {
-
-            });
+            ad.show(this, rewardItem -> showAds = true);
         }
     }
 }
