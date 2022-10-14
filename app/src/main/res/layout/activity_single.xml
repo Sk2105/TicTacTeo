@@ -4,7 +4,6 @@
     style="@style/layout"
     tools:context=".SingleActivity">
 
-
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="8dp"

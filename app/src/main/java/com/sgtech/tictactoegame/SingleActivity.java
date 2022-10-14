@@ -222,8 +222,14 @@ public class SingleActivity extends AppCompatActivity {
         if (i == 9 && tagFiled != tagArray) {
             startGame = true;
             new AlertDialog.Builder(this).setPositiveButton("Play Again", (dialog, which) -> {
-                dialog.dismiss();
-                cleanCode();
+                try {
+                    showAd();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    dialog.dismiss();
+                    cleanCode();
+                }
             }).setTitle("Match Draw").setMessage("Play Again").create().show();
         }
     }
