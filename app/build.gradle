@@ -9,8 +9,8 @@ android {
         applicationId "com.sgtech.tictactoegame"
         minSdk 21
         targetSdk 32
-        versionCode 4
-        versionName "2.1"
+        versionCode 6
+        versionName "3.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,5 +31,6 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.adcolony:sdk:4.8.0'
+    implementation "com.google.android.gms:play-services-ads-identifier:17.0.0"
 }

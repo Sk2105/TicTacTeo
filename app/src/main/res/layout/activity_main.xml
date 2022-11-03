@@ -8,9 +8,12 @@
     <TextView
         android:id="@+id/title"
         style="@style/title_textStyle"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
         android:gravity="center"
+        android:shadowColor="@color/white"
+        android:shadowRadius="20"
         android:text="@string/app_name"
         android:textSize="28sp" />
 
@@ -24,6 +27,9 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/icon_bg"
+        android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher_foreground" />
 
     <Button
@@ -38,11 +44,10 @@
         android:layout_width="match_parent"
         android:text="@string/single_player" />
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:id="@+id/adView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3397903282571414/2428539675" />
+        android:gravity="center"
+        android:layout_height="?attr/actionBarSize" />
 
 </LinearLayout>

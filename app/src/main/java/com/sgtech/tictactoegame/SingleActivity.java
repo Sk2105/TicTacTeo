@@ -1,6 +1,6 @@
 package com.sgtech.tictactoegame;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -14,15 +14,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import com.adcolony.sdk.AdColony;
+import com.adcolony.sdk.AdColonyAdOptions;
+import com.adcolony.sdk.AdColonyInterstitial;
+import com.adcolony.sdk.AdColonyInterstitialListener;
+import com.adcolony.sdk.AdColonyZone;
+
 
 import java.util.Objects;
-import java.util.Random;
 
 public class SingleActivity extends AppCompatActivity {
     TextView txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9;
@@ -34,9 +33,11 @@ public class SingleActivity extends AppCompatActivity {
     LinearLayout lin1, lin2;
     int[][] winningArray = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 4, 8}, {2, 4, 6}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
     String gameMode;
-    RewardedInterstitialAd ad;
-    String adId = "ca-app-pub-3397903282571414/4124764729";
     boolean showAds;
+    private final String APP_ID = "appbf3bfe59d4fa419199";
+    private final String ZONE_ID = "vz6626d6faf21e4993b0";
+    AdColonyAdOptions options;
+    AdColonyInterstitial ad;
 
     public void exitDialog() {
         new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
@@ -56,6 +57,7 @@ public class SingleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single);
+        AdColony.configure(this, APP_ID,ZONE_ID);
         chooseMode();
         findId();
         txt1.setOnClickListener(v -> onset(txt1));
@@ -153,45 +155,82 @@ public class SingleActivity extends AppCompatActivity {
             } finally {
                 if (i < 9 && !startGame) {
                     if (Objects.equals(gameMode, "H")) {
-                        new Handler().postDelayed(this::startAI, 600);
+                        new Handler().postDelayed(this::hardPlay, 600);
+                    } else if (gameMode.equals("S")) {
+                        new Handler().postDelayed(this::softPlay, 600);
                     } else {
-                        new Handler().postDelayed(this::randomCall, 600);
+                        new Handler().postDelayed(this::mediumPlay, 600);
                     }
                 }
             }
         }
     }
 
-
-    public void randomCall() {
-        int r;
-        do {
-            Random random = new Random();
-            r = random.nextInt(9);
-        } while (tagFiled[r] != -1);
-        setO(r);
-    }
-
-    public void startAI() {
+    public void hardPlay() {
         if (tagFiled[4] == -1) {
             setO(4);
-        } else if (tagFiled[1] == -1) {
-            setO(1);
-        } else if (tagFiled[3] == -1) {
-            setO(3);
-        } else if (tagFiled[2] == -1) {
-            setO(2);
-        } else if (tagFiled[6] == -1) {
-            setO(6);
-        } else if (tagFiled[8] == -1) {
-            setO(8);
         } else if (tagFiled[0] == -1) {
             setO(0);
+        } else if (tagFiled[6] == -1) {
+            setO(6);
+        } else if (tagFiled[3] == -1) {
+            setO(3);
         } else if (tagFiled[5] == -1) {
             setO(5);
+        } else if (tagFiled[8] == -1) {
+            setO(8);
+        } else if (tagFiled[2] == -1) {
+            setO(2);
+        } else if (tagFiled[1] == -1) {
+            setO(1);
         } else if (tagFiled[7] == -1) {
             setO(7);
         }
+    }
+
+    public void mediumPlay() {
+        if (tagFiled[0] == -1) {
+            setO(0);
+        } else if (tagFiled[1] == -1) {
+            setO(1);
+        } else if (tagFiled[2] == -1) {
+            setO(2);
+        } else if (tagFiled[3] == -1) {
+            setO(3);
+        } else if (tagFiled[4] == -1) {
+            setO(4);
+        } else if (tagFiled[5] == -1) {
+            setO(5);
+        } else if (tagFiled[6] == -1) {
+            setO(6);
+        } else if (tagFiled[7] == -1) {
+            setO(7);
+        } else if (tagFiled[8] == -1) {
+            setO(8);
+        }
+    }
+
+    public void softPlay() {
+        if (tagFiled[0] == -1) {
+            setO(0);
+        } else if (tagFiled[1] == -1) {
+            setO(1);
+        } else if (tagFiled[2] == -1) {
+            setO(2);
+        } else if (tagFiled[3] == -1) {
+            setO(3);
+        } else if (tagFiled[4] == -1) {
+            setO(4);
+        } else if (tagFiled[5] == -1) {
+            setO(5);
+        } else if (tagFiled[6] == -1) {
+            setO(6);
+        } else if (tagFiled[7] == -1) {
+            setO(7);
+        } else if (tagFiled[8] == -1) {
+            setO(8);
+        }
+
     }
 
 
@@ -227,16 +266,17 @@ public class SingleActivity extends AppCompatActivity {
 
         if (i == 9 && tagFiled != tagArray) {
             startGame = true;
-            new AlertDialog.Builder(this).setPositiveButton("Play Again", (dialog, which) -> {
-                try {
-                    showAd();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    dialog.dismiss();
-                    cleanCode();
-                }
-            }).setTitle("Match Draw").setMessage("Play Again").create().show();
+            new AlertDialog.Builder(this).setCancelable(false).setPositiveButton("Play Again",
+                    (dialog, which) -> {
+                        try {
+                            showAd();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            dialog.dismiss();
+                            cleanCode();
+                        }
+                    }).setTitle("Match Draw").setMessage("Play Again").create().show();
         }
     }
 
@@ -252,7 +292,7 @@ public class SingleActivity extends AppCompatActivity {
                 dialog.dismiss();
                 cleanCode();
             }
-        });
+        }).setCancelable(false);
         if (t.equals("X")) {
             builder.setTitle("Congratulations").setMessage("You are win the match").create().show();
         } else {
@@ -271,7 +311,7 @@ public class SingleActivity extends AppCompatActivity {
         Button easy = dialog.findViewById(R.id.easy);
         Button hard = dialog.findViewById(R.id.hard);
         easy.setOnClickListener(v -> {
-            gameMode = "E";
+            gameMode = "S";
             dialog.dismiss();
         });
         hard.setOnClickListener(v -> {
@@ -288,51 +328,39 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void loadAd() {
-        RewardedInterstitialAd.load(this, adId, new AdRequest.Builder().build(),
-                new RewardedInterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        ad = null;
-                    }
+        AdColony.setRewardListener(adColonyReward -> {
 
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
-                        super.onAdLoaded(rewardedInterstitialAd);
-                        ad = rewardedInterstitialAd;
-                        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdClicked() {
-                                super.onAdClicked();
-                            }
+        });
+        AdColonyInterstitialListener listener = new AdColonyInterstitialListener() {
+            @Override
+            public void onRequestFilled(AdColonyInterstitial ad) {
+                SingleActivity.this.ad = ad;
+            }
 
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                super.onAdDismissedFullScreenContent();
-                            }
+            @Override
+            public void onRequestNotFilled(AdColonyZone zone) {
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                super.onAdFailedToShowFullScreenContent(adError);
-                            }
+            }
 
-                            @Override
-                            public void onAdImpression() {
-                                super.onAdImpression();
-                            }
+            @Override
+            public void onOpened(AdColonyInterstitial ad) {
 
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                super.onAdShowedFullScreenContent();
-                            }
-                        });
-                    }
-                });
+            }
+
+            @Override
+            public void onExpiring(AdColonyInterstitial ad) {
+
+            }
+        };
+        AdColony.requestInterstitial(ZONE_ID, listener, options);
+
     }
 
     public void showAd() {
         if (ad != null) {
-            ad.show(this, rewardItem -> showAds = true);
+            showAds = true;
+            ad.show();
+
         }
     }
 }

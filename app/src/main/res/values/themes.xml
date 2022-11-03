@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.TicTacToeGame" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/blue</item>
+    <style name="Theme.TicTacToeGame" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

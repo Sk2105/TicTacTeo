@@ -1,22 +1,20 @@
 package com.sgtech.tictactoegame;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.graphics.Shader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import com.adcolony.sdk.AdColony;
+import com.adcolony.sdk.AdColonyAdOptions;
+import com.adcolony.sdk.AdColonyInterstitial;
+import com.adcolony.sdk.AdColonyInterstitialListener;
+import com.adcolony.sdk.AdColonyZone;
 
 
 public class MultiActivity extends AppCompatActivity {
@@ -30,15 +28,19 @@ public class MultiActivity extends AppCompatActivity {
     int player_1 = 1;
     int player_2 = 0;
     int actionPlayer = player_1;
-    RewardedInterstitialAd ad;
-    String adId = "ca-app-pub-3397903282571414/1641824196";
+
     boolean showAds;
+    private final String APP_ID = "appbf3bfe59d4fa419199";
+    private final String ZONE_ID = "vzee6a6f2f66d24b24b1";
+    AdColonyAdOptions options;
+    AdColonyInterstitial ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi);
         findId();
+        AdColony.configure(this, APP_ID,ZONE_ID);
         txt1.setOnClickListener(v -> onset(txt1));
         txt9.setOnClickListener(v -> onset(txt9));
         txt8.setOnClickListener(v -> onset(txt8));
@@ -161,32 +163,34 @@ public class MultiActivity extends AppCompatActivity {
         int[] tagArray = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
 
         if (i == 9 && tagFiled != tagArray) {
-            new AlertDialog.Builder(this).setPositiveButton("Play Again", (dialog, which) -> {
-                try {
-                    showAd();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    dialog.dismiss();
-                    cleanCode();
-                }
-            }).setTitle("Match Draw").setMessage("Play Again").create().show();
+            new AlertDialog.Builder(this).setCancelable(false).setPositiveButton("Play Again",
+                    (dialog, which) -> {
+                        try {
+                            showAd();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            dialog.dismiss();
+                            cleanCode();
+                        }
+                    }).setTitle("Match Draw").setMessage("Play Again").create().show();
         }
     }
 
 
     private void dialog(String t) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setPositiveButton("Play " +
-                "Again", (dialog, which) -> {
-            try {
-                showAd();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                dialog.dismiss();
-                cleanCode();
-            }
-        }).setTitle("Congratulations");
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this).setCancelable(false).setPositiveButton("Play " +
+                        "Again", (dialog, which) -> {
+                    try {
+                        showAd();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        dialog.dismiss();
+                        cleanCode();
+                    }
+                }).setTitle("Congratulations");
         if (t.equals("X")) {
             builder.setMessage("Player 1 is win the match").create().show();
         } else {
@@ -201,53 +205,39 @@ public class MultiActivity extends AppCompatActivity {
     }
 
     public void loadAd() {
-        RewardedInterstitialAd.load(this, adId, new AdRequest.Builder().build(),
-                new RewardedInterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        ad = null;
-                    }
+        AdColony.setRewardListener(adColonyReward -> {
 
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
-                        super.onAdLoaded(rewardedInterstitialAd);
-                        ad = rewardedInterstitialAd;
-                        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdClicked() {
-                                super.onAdClicked();
-                            }
+        });
+        AdColonyInterstitialListener listener = new AdColonyInterstitialListener() {
+            @Override
+            public void onRequestFilled(AdColonyInterstitial ad) {
+                MultiActivity.this.ad = ad;
+            }
 
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                super.onAdDismissedFullScreenContent();
-                            }
+            @Override
+            public void onRequestNotFilled(AdColonyZone zone) {
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                super.onAdFailedToShowFullScreenContent(adError);
-                            }
+            }
 
-                            @Override
-                            public void onAdImpression() {
-                                super.onAdImpression();
-                            }
+            @Override
+            public void onOpened(AdColonyInterstitial ad) {
 
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                super.onAdShowedFullScreenContent();
-                            }
-                        });
-                    }
-                });
+            }
+
+            @Override
+            public void onExpiring(AdColonyInterstitial ad) {
+
+            }
+        };
+        AdColony.requestInterstitial(ZONE_ID, listener, options);
+
     }
 
     public void showAd() {
         if (ad != null) {
-            ad.show(this, rewardItem -> {
-                showAds = true;
-            });
+            showAds = true;
+            ad.show();
+
         }
     }
 }
