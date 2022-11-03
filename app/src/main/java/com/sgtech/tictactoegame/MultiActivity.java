@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.adcolony.sdk.AdColony;
-import com.adcolony.sdk.AdColonyAdOptions;
-import com.adcolony.sdk.AdColonyInterstitial;
-import com.adcolony.sdk.AdColonyInterstitialListener;
-import com.adcolony.sdk.AdColonyZone;
+import com.vungle.warren.InitCallback;
+import com.vungle.warren.LoadAdCallback;
+import com.vungle.warren.PlayAdCallback;
+import com.vungle.warren.Vungle;
+import com.vungle.warren.error.VungleException;
 
 
 public class MultiActivity extends AppCompatActivity {
@@ -30,17 +30,14 @@ public class MultiActivity extends AppCompatActivity {
     int actionPlayer = player_1;
 
     boolean showAds;
-    private final String APP_ID = "appbf3bfe59d4fa419199";
-    private final String ZONE_ID = "vzee6a6f2f66d24b24b1";
-    AdColonyAdOptions options;
-    AdColonyInterstitial ad;
+    private final String APP_ID = "633956b1957587af706e7e8c";
+    private final String ZONE_ID = "R1-4404321";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi);
         findId();
-        AdColony.configure(this, APP_ID,ZONE_ID);
         txt1.setOnClickListener(v -> onset(txt1));
         txt9.setOnClickListener(v -> onset(txt9));
         txt8.setOnClickListener(v -> onset(txt8));
@@ -205,39 +202,85 @@ public class MultiActivity extends AppCompatActivity {
     }
 
     public void loadAd() {
-        AdColony.setRewardListener(adColonyReward -> {
+        Vungle.init(APP_ID, this, new InitCallback() {
+            @Override
+            public void onSuccess() {
+                Vungle.loadAd(ZONE_ID, new LoadAdCallback() {
+                    @Override
+                    public void onAdLoad(String placementId) {
 
+                    }
+
+                    @Override
+                    public void onError(String placementId, VungleException exception) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError(VungleException exception) {
+
+            }
+
+            @Override
+            public void onAutoCacheAdAvailable(String placementId) {
+
+            }
         });
-        AdColonyInterstitialListener listener = new AdColonyInterstitialListener() {
-            @Override
-            public void onRequestFilled(AdColonyInterstitial ad) {
-                MultiActivity.this.ad = ad;
-            }
-
-            @Override
-            public void onRequestNotFilled(AdColonyZone zone) {
-
-            }
-
-            @Override
-            public void onOpened(AdColonyInterstitial ad) {
-
-            }
-
-            @Override
-            public void onExpiring(AdColonyInterstitial ad) {
-
-            }
-        };
-        AdColony.requestInterstitial(ZONE_ID, listener, options);
 
     }
 
     public void showAd() {
-        if (ad != null) {
+        if (Vungle.canPlayAd(ZONE_ID)) {
             showAds = true;
-            ad.show();
+            Vungle.playAd(ZONE_ID, null, new PlayAdCallback() {
+                @Override
+                public void creativeId(String creativeId) {
 
+                }
+
+                @Override
+                public void onAdStart(String placementId) {
+
+                }
+
+                @Override
+                public void onAdEnd(String placementId, boolean completed, boolean isCTAClicked) {
+
+                }
+
+                @Override
+                public void onAdEnd(String placementId) {
+
+                }
+
+                @Override
+                public void onAdClick(String placementId) {
+
+                }
+
+                @Override
+                public void onAdRewarded(String placementId) {
+
+                }
+
+                @Override
+                public void onAdLeftApplication(String placementId) {
+
+                }
+
+                @Override
+                public void onError(String placementId, VungleException exception) {
+
+                }
+
+                @Override
+                public void onAdViewed(String placementId) {
+
+                }
+            });
         }
+
     }
 }

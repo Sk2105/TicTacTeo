@@ -10,25 +10,25 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.adcolony.sdk.AdColony;
-import com.adcolony.sdk.AdColonyAdOptions;
-import com.adcolony.sdk.AdColonyAdSize;
-import com.adcolony.sdk.AdColonyAdView;
-import com.adcolony.sdk.AdColonyAdViewListener;
+
+import com.vungle.warren.AdConfig;
+import com.vungle.warren.Banners;
+import com.vungle.warren.InitCallback;
+import com.vungle.warren.LoadAdCallback;
+import com.vungle.warren.Vungle;
+import com.vungle.warren.error.VungleException;
 
 public class MainActivity extends AppCompatActivity {
     Button multy, single;
     RelativeLayout adview;
-    private final String APP_ID = "appbf3bfe59d4fa419199";
-    private final String ZONE_ID = "vzae6dcaf98b094ceea6";
-    AdColonyAdOptions options;
-    AdColonyAdView ad;
+    private final String APP_ID = "633956b1957587af706e7e8c";
+    private final String ZONE_ID = "B1-3352096";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AdColony.configure(this, APP_ID, ZONE_ID);
         showAd();
         multy = findViewById(R.id.multy);
         single = findViewById(R.id.single);
@@ -44,16 +44,36 @@ public class MainActivity extends AppCompatActivity {
 
     public void showAd() {
         adview = findViewById(R.id.adView);
-        AdColonyAdViewListener listener = new AdColonyAdViewListener() {
+        Vungle.init(APP_ID, this, new InitCallback() {
             @Override
-            public void onRequestFilled(AdColonyAdView adColonyAdView) {
-                if (adColonyAdView != null) {
-                    ad = adColonyAdView;
-                    adview.addView(ad);
-                }
+            public void onSuccess() {
+                Banners.loadBanner(ZONE_ID, AdConfig.AdSize.BANNER, new LoadAdCallback() {
+                    @Override
+                    public void onAdLoad(String placementId) {
+                        if (Banners.canPlayAd(placementId, AdConfig.AdSize.BANNER)) {
+                            adview.addView(Banners.getBanner(placementId, AdConfig.AdSize.BANNER,
+                                    null));
+                        }
+                    }
+
+                    @Override
+                    public void onError(String placementId, VungleException exception) {
+
+                    }
+                });
             }
-        };
-        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, options);
+
+            @Override
+            public void onError(VungleException exception) {
+
+            }
+
+            @Override
+            public void onAutoCacheAdAvailable(String placementId) {
+
+            }
+        });
+
 
     }
 }
