@@ -4,10 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,8 +36,9 @@ public class MultiActivity extends AppCompatActivity {
     int player_2 = 0;
     int actionPlayer = player_1;
     RewardedInterstitialAd ad;
-    String adId = "ca-app-pub-3397903282571414/1641824196";
+    String adId = "ca-app-pub-2602459603500864/1090783526";
     boolean showAds;
+    ImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +83,7 @@ public class MultiActivity extends AppCompatActivity {
             showAds = false;
             new Handler().postDelayed(this::loadAd, 4000);
         }
-
+        actionPlayer = player_1;
         txt1.setText("");
         txt2.setText("");
         txt3.setText("");
@@ -156,43 +162,21 @@ public class MultiActivity extends AppCompatActivity {
                     return;
                 }
             }
-
         }
         int[] tagArray = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
-
         if (i == 9 && tagFiled != tagArray) {
-            new AlertDialog.Builder(this).setPositiveButton("Play Again", (dialog, which) -> {
-                try {
-                    showAd();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    dialog.dismiss();
-                    cleanCode();
-                }
-            }).setTitle("Match Draw").setMessage("Play Again").create().show();
+            showDialogs("Match Draw", "Play Again");
+            img.setImageDrawable(getDrawable(R.drawable.replay));
         }
     }
 
 
     private void dialog(String t) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setPositiveButton("Play " +
-                "Again", (dialog, which) -> {
-            try {
-                showAd();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                dialog.dismiss();
-                cleanCode();
-            }
-        }).setTitle("Congratulations");
         if (t.equals("X")) {
-            builder.setMessage("Player 1 is win the match").create().show();
+            showDialogs("Congratulations", "Player 1 is win the match");
         } else {
-            builder.setMessage("Player 2 is win the match").create().show();
+            showDialogs("Congratulations", "Player 2 is win the match");
         }
-
     }
 
     public void setDrawable(int d1, int d2) {
@@ -241,6 +225,26 @@ public class MultiActivity extends AppCompatActivity {
                         });
                     }
                 });
+    }
+
+    public void showDialogs(String title, String win_text) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.wining_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button btn = dialog.findViewById(R.id.play_again);
+        img = dialog.findViewById(R.id.img);
+        btn.setOnClickListener(v -> {
+            cleanCode();
+            dialog.dismiss();
+        });
+        img.setImageDrawable(getDrawable(R.drawable.celebration));
+        TextView text_title = dialog.findViewById(R.id.text_title);
+        TextView win_title = dialog.findViewById(R.id.win_txt);
+        win_title.setText(win_text);
+        text_title.setText(title);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.create();
+        dialog.show();
     }
 
     public void showAd() {

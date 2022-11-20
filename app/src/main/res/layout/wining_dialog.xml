@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/wpStyle"
+    android:padding="20dp"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/text_title"
+        style="@style/txt_textStyle"
+        android:text="Congataltaions..."
+        android:textColor="@color/blue"
+        android:textSize="28sp" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/celebration" />
+
+    <TextView
+        android:id="@+id/win_txt"
+        style="@style/txt_textStyle"
+        android:text="X is Win"
+        android:layout_margin="5dp"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/play_again"
+        style="@style/btn_style"
+        android:textSize="16sp"
+        android:text="Play Again" />
+</LinearLayout>

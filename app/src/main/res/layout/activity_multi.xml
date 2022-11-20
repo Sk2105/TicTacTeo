@@ -9,14 +9,14 @@
         android:layout_height="8dp"
         android:layout_above="@id/btn5"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/line2" />
+        android:background="@drawable/line" />
 
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="8dp"
         android:layout_below="@id/btn5"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/line2" />
+        android:background="@drawable/line" />
 
     <RelativeLayout
         android:layout_width="8dp"

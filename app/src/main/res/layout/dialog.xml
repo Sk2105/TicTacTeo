@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/wpStyle"
+    android:background="@drawable/dialog_bg"
     android:gravity="center"
-    android:orientation="vertical">
+    android:layout_gravity="center">
+
+    <TextView
+        style="@style/txt_textStyle"
+        android:textSize="24sp"
+        android:layout_margin="20dp"
+        android:text="@string/select_game_mode"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/easy"
         style="@style/btn_style"
         android:text="@string/easy" />
 
+    <Button
+        android:id="@+id/medium"
+        style="@style/btn_style"
+        android:text="@string/medium" />
 
     <Button
         android:id="@+id/hard"

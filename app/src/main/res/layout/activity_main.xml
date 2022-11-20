@@ -23,7 +23,9 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_margin="20dp"
         android:layout_gravity="center"
+        android:background="@drawable/icon_bg"
         android:src="@mipmap/ic_launcher_foreground" />
 
     <Button
@@ -43,6 +45,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3397903282571414/2428539675" />
+        ads:adUnitId="ca-app-pub-2602459603500864/2629976342" />
 
 </LinearLayout>

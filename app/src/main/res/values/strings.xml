@@ -12,4 +12,6 @@
     <string name="hard">Hard</string>
     <string name="multi_player">Multi Player</string>
     <string name="single_player">Single Player</string>
+    <string name="medium">Medium</string>
+    <string name="select_game_mode">Select Game Mode</string>
 </resources>
