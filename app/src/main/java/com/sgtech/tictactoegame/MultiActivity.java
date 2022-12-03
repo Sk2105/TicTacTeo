@@ -2,12 +2,10 @@ package com.sgtech.tictactoegame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.Shader;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -79,6 +77,7 @@ public class MultiActivity extends AppCompatActivity {
     }
 
     public void cleanCode() {
+        showAd();
         if (showAds) {
             showAds = false;
             new Handler().postDelayed(this::loadAd, 4000);
@@ -166,7 +165,7 @@ public class MultiActivity extends AppCompatActivity {
         int[] tagArray = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
         if (i == 9 && tagFiled != tagArray) {
             showDialogs("Match Draw", "Play Again");
-            img.setImageDrawable(getDrawable(R.drawable.replay));
+            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.replay));
         }
     }
 
@@ -180,8 +179,8 @@ public class MultiActivity extends AppCompatActivity {
     }
 
     public void setDrawable(int d1, int d2) {
-        lin1.setBackgroundDrawable(getResources().getDrawable(d1));
-        lin2.setBackgroundDrawable(getResources().getDrawable(d2));
+        lin1.setBackground(AppCompatResources.getDrawable(this,d1));
+        lin2.setBackground(AppCompatResources.getDrawable(this,d2));
     }
 
     public void loadAd() {
@@ -237,7 +236,7 @@ public class MultiActivity extends AppCompatActivity {
             cleanCode();
             dialog.dismiss();
         });
-        img.setImageDrawable(getDrawable(R.drawable.celebration));
+        img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.celebration));
         TextView text_title = dialog.findViewById(R.id.text_title);
         TextView win_title = dialog.findViewById(R.id.win_txt);
         win_title.setText(win_text);

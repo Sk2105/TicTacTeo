@@ -2,6 +2,7 @@ package com.sgtech.tictactoegame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -39,6 +40,7 @@ public class SingleActivity extends AppCompatActivity {
     String adId = "ca-app-pub-2602459603500864/7464620181";
     boolean showAds;
     ImageView img;
+    boolean id_success = false;
 
     public void exitDialog() {
         new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
@@ -115,7 +117,6 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void restart(View view) {
-
         cleanCode();
     }
 
@@ -142,7 +143,7 @@ public class SingleActivity extends AppCompatActivity {
             } finally {
                 if (i < 9 && !startGame) {
                     if (Objects.equals(gameMode, "H")) {
-                        new Handler().postDelayed(this::startAI, 500);
+                        new Handler().postDelayed(this::checkBox, 500);
                     } else if (gameMode.equals("M")) {
                         new Handler().postDelayed(this::startMedium, 500);
                     } else {
@@ -163,29 +164,6 @@ public class SingleActivity extends AppCompatActivity {
         } while (tagFiled[r] != -1);
         setO(r);
     }
-
-    public void startAI() {
-        if (tagFiled[4] == -1) {
-            setO(4);
-        } else if (tagFiled[1] == -1) {
-            setO(1);
-        } else if (tagFiled[3] == -1) {
-            setO(3);
-        } else if (tagFiled[2] == -1) {
-            setO(2);
-        } else if (tagFiled[6] == -1) {
-            setO(6);
-        } else if (tagFiled[8] == -1) {
-            setO(8);
-        } else if (tagFiled[0] == -1) {
-            setO(0);
-        } else if (tagFiled[5] == -1) {
-            setO(5);
-        } else if (tagFiled[7] == -1) {
-            setO(7);
-        }
-    }
-
 
     public void setO(int t) {
         TextView text = txt[t];
@@ -213,14 +191,13 @@ public class SingleActivity extends AppCompatActivity {
                     return;
                 }
             }
-
         }
         int[] tagArray = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
 
         if (i == 9 && tagFiled != tagArray) {
             startGame = true;
             showDialogs("Match Draw", "Play Again");
-            img.setImageDrawable(getDrawable(R.drawable.replay));
+            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.replay));
         }
     }
 
@@ -228,29 +205,29 @@ public class SingleActivity extends AppCompatActivity {
     private void dialog(String t) {
         if (t.equals("X")) {
             showDialogs("Congratulations", "You are win the match");
-
+            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.celebration));
         } else {
-            showDialogs("Oops! You Lost ", "You Lost the match");
-            img.setImageDrawable(getDrawable(R.drawable.replay));
+            showDialogs("Oops! You Lost", "You Lost the match");
+            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.replay));
         }
 
     }
 
     public void startMedium() {
-        if (tagFiled[0] == -1) {
-            setO(0);
+        if (tagFiled[4] == -1) {
+            setO(4);
         } else if (tagFiled[2] == -1) {
             setO(2);
         } else if (tagFiled[6] == -1) {
             setO(6);
         } else if (tagFiled[3] == -1) {
             setO(3);
-        } else if (tagFiled[5] == -1) {
-            setO(5);
-        } else if (tagFiled[4] == -1) {
-            setO(4);
         } else if (tagFiled[8] == -1) {
             setO(8);
+        } else if (tagFiled[0] == -1) {
+            setO(0);
+        } else if (tagFiled[5] == -1) {
+            setO(5);
         } else if (tagFiled[1] == -1) {
             setO(1);
         } else if (tagFiled[7] == -1) {
@@ -284,8 +261,8 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void setDrawable(int d1, int d2) {
-        lin1.setBackgroundDrawable(getResources().getDrawable(d1));
-        lin2.setBackgroundDrawable(getResources().getDrawable(d2));
+        lin1.setBackground(AppCompatResources.getDrawable(this,d1));
+        lin2.setBackground(AppCompatResources.getDrawable(this,d2));
     }
 
     public void loadAd() {
@@ -341,7 +318,6 @@ public class SingleActivity extends AppCompatActivity {
             cleanCode();
             dialog.dismiss();
         });
-        img.setImageDrawable(getDrawable(R.drawable.celebration));
         TextView text_title = dialog.findViewById(R.id.text_title);
         TextView win_title = dialog.findViewById(R.id.win_txt);
         win_title.setText(win_text);
@@ -355,5 +331,47 @@ public class SingleActivity extends AppCompatActivity {
         if (ad != null) {
             ad.show(this, rewardItem -> showAds = true);
         }
+    }
+
+    public void checkBox() {
+        id_success = false;
+        for (int[] ints : winningArray) {
+            int val0 = ints[0];
+            int val1 = ints[1];
+            int val2 = ints[2];
+
+            if (tagFiled[val0] == tagFiled[val1] || tagFiled[val1] == tagFiled[val2] || tagFiled[val2] == tagFiled[val0]) {
+                if (tagFiled[val0] == 0 && tagFiled[val1] == 0 && tagFiled[val2] == -1) {
+                    id_success = true;
+                    setO(val2);
+                    return;
+                } else if (tagFiled[val1] == 0 && tagFiled[val2] == 0 && tagFiled[val0] == -1) {
+                    id_success = true;
+                    setO(val0);
+                    return;
+                } else if (tagFiled[val0] == 0 && tagFiled[val2] == 0 && tagFiled[val1] == -1) {
+                    id_success = true;
+                    setO(val1);
+                    return;
+                } else if (tagFiled[val0] == 1 && tagFiled[val1] == 1 && tagFiled[val2] == -1) {
+                    id_success = true;
+                    setO(val2);
+                    return;
+                } else if (tagFiled[val2] == 1 && tagFiled[val1] == 1 && tagFiled[val0] == -1) {
+                    id_success = true;
+                    setO(val0);
+                    return;
+                } else if (tagFiled[val2] == 1 && tagFiled[val0] == 1 && tagFiled[val1] == -1) {
+                    id_success = true;
+                    setO(val1);
+                    return;
+                }
+            }
+        }
+        if (!id_success) {
+            startMedium();
+        }
+
+
     }
 }
