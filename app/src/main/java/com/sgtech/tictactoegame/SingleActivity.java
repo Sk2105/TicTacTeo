@@ -41,6 +41,7 @@ public class SingleActivity extends AppCompatActivity {
     boolean showAds;
     ImageView img;
     boolean id_success = false;
+    boolean oneTime = false;
 
     public void exitDialog() {
         new AlertDialog.Builder(this).setCancelable(false).setTitle("Alert").setMessage("Are your" +
@@ -111,6 +112,7 @@ public class SingleActivity extends AppCompatActivity {
         txt8.setText("");
         txt9.setText("");
         i = 0;
+        oneTime = false;
         startGame = true;
         setDrawable(R.drawable.icon_bg, R.drawable.gray_box);
         tagFiled = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -197,7 +199,7 @@ public class SingleActivity extends AppCompatActivity {
         if (i == 9 && tagFiled != tagArray) {
             startGame = true;
             showDialogs("Match Draw", "Play Again");
-            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.replay));
+            img.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.replay));
         }
     }
 
@@ -205,10 +207,10 @@ public class SingleActivity extends AppCompatActivity {
     private void dialog(String t) {
         if (t.equals("X")) {
             showDialogs("Congratulations", "You are win the match");
-            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.celebration));
+            img.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.celebration));
         } else {
             showDialogs("Oops! You Lost", "You Lost the match");
-            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.replay));
+            img.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.replay));
         }
 
     }
@@ -220,12 +222,12 @@ public class SingleActivity extends AppCompatActivity {
             setO(2);
         } else if (tagFiled[6] == -1) {
             setO(6);
-        } else if (tagFiled[3] == -1) {
-            setO(3);
-        } else if (tagFiled[8] == -1) {
-            setO(8);
         } else if (tagFiled[0] == -1) {
             setO(0);
+        } else if (tagFiled[8] == -1) {
+            setO(8);
+        } else if (tagFiled[3] == -1) {
+            setO(3);
         } else if (tagFiled[5] == -1) {
             setO(5);
         } else if (tagFiled[1] == -1) {
@@ -233,6 +235,19 @@ public class SingleActivity extends AppCompatActivity {
         } else if (tagFiled[7] == -1) {
             setO(7);
         }
+    }
+
+
+    public void startHard() {
+        int[] t = {1, 3, 5, 7};
+        for (int a : t) {
+            if (tagFiled[a] == -1) {
+                setO(a);
+                oneTime = true;
+                return;
+            }
+        }
+
     }
 
     public void chooseMode() {
@@ -261,8 +276,8 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void setDrawable(int d1, int d2) {
-        lin1.setBackground(AppCompatResources.getDrawable(this,d1));
-        lin2.setBackground(AppCompatResources.getDrawable(this,d2));
+        lin1.setBackground(AppCompatResources.getDrawable(this, d1));
+        lin2.setBackground(AppCompatResources.getDrawable(this, d2));
     }
 
     public void loadAd() {
@@ -365,6 +380,13 @@ public class SingleActivity extends AppCompatActivity {
                     id_success = true;
                     setO(val1);
                     return;
+                } else if (tagFiled[val2] == 1 && tagFiled[val0] == 1 && tagFiled[val1] == 0) {
+                    if (!oneTime) {
+                        id_success = true;
+                        startHard();
+                        return;
+                    }
+
                 }
             }
         }

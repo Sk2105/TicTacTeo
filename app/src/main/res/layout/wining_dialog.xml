@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/text_title"
         style="@style/txt_textStyle"
-        android:text="Congataltaions..."
+        android:text="@string/congataltaions"
         android:textColor="@color/blue"
         android:textSize="28sp" />
 
@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/win_txt"
         style="@style/txt_textStyle"
-        android:text="X is Win"
+        android:text="@string/x_is_win"
         android:layout_margin="5dp"
         android:textSize="20sp" />
 

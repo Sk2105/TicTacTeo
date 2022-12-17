@@ -12,8 +12,10 @@
         android:theme="@style/Theme.TicTacToeGame"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".HomeActivity"
+            android:exported="false">
+
+        </activity>
 
         <activity
             android:name=".MultiActivity"
@@ -30,9 +32,11 @@
         <activity
             android:name=".SingleActivity"
             android:exported="false" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2602459603500864~6602964657"/>
+            android:value="ca-app-pub-2602459603500864~6602964657" />
+
     </application>
 
 </manifest>

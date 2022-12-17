@@ -176,6 +176,7 @@
 
             <TextView
                 android:id="@+id/x"
+                android:fontFamily="@font/baloo_bhai"
                 style="@style/txt_textStyle"
                 android:text="@string/x" />
         </LinearLayout>
@@ -195,6 +196,7 @@
 
             <TextView
                 android:id="@+id/o"
+                android:fontFamily="@font/baloo_bhai"
                 style="@style/txt_textStyle"
                 android:text="@string/o" />
         </LinearLayout>

@@ -14,6 +14,7 @@
     <TextView
         style="@style/title_textStyle"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/rubik_vinyl_regular"
         android:text="@string/app_name"
         android:textColor="@color/white" />
 
