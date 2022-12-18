@@ -114,4 +114,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
     </style>
+
+    <style name="editBoxStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:drawableStart">@drawable/persion_selector</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:maxLength">6</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/edit_box</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
 </resources>

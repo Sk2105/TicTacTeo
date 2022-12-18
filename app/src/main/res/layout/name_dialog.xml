@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/wpStyle"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        style="@style/txt_textStyle"
+        android:gravity="center"
+        android:text="Enter You Player's Name"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/p1_name"
+        style="@style/editBoxStyle"
+        android:hint="@string/player_1"
+        android:imeOptions="actionNext" />
+
+    <EditText
+        android:id="@+id/p2_name"
+        style="@style/editBoxStyle"
+        android:hint="@string/player_2"
+        android:imeOptions="actionDone" />
+
+    <Button
+        android:id="@+id/play"
+        style="@style/btn_style"
+        android:layout_gravity="center"
+        android:text="@string/play"
+
+
+        />
+</LinearLayout>

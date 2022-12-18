@@ -170,9 +170,9 @@
 
 
             <TextView
-                android:id="@+id/you"
+                android:id="@+id/player_1"
                 style="@style/title_textStyle"
-                android:text="@string/player_2" />
+                android:text="@string/player_1" />
 
             <TextView
                 android:id="@+id/x"
@@ -190,7 +190,7 @@
 
 
             <TextView
-                android:id="@+id/com"
+                android:id="@+id/player_2"
                 style="@style/title_textStyle"
                 android:text="@string/player_2" />
 

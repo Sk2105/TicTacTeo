@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+
+import java.util.Locale;
 
 
 public class MultiActivity extends AppCompatActivity {
@@ -37,12 +40,16 @@ public class MultiActivity extends AppCompatActivity {
     String adId = "ca-app-pub-2602459603500864/1090783526";
     boolean showAds;
     ImageView img;
+    TextView player1, player2;
+    String p1Name = "Player 1";
+    String p2Name = "Player 2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi);
         findId();
+        startNameDialog();
         txt1.setOnClickListener(v -> onset(txt1));
         txt9.setOnClickListener(v -> onset(txt9));
         txt8.setOnClickListener(v -> onset(txt8));
@@ -52,6 +59,35 @@ public class MultiActivity extends AppCompatActivity {
         txt4.setOnClickListener(v -> onset(txt4));
         txt3.setOnClickListener(v -> onset(txt3));
         txt2.setOnClickListener(v -> onset(txt2));
+    }
+
+    public void setName() {
+        player1.setText(p1Name.toLowerCase(Locale.ROOT));
+        player2.setText(p2Name.toLowerCase(Locale.ROOT));
+    }
+
+    public void startNameDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.name_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button play = dialog.findViewById(R.id.play);
+        TextView p1 = dialog.findViewById(R.id.p1_name);
+        TextView p2 = dialog.findViewById(R.id.p2_name);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        play.setOnClickListener(v -> {
+            if (!p1.getText().toString().equals("")) {
+                p1Name = p1.getText().toString();
+            }
+            if (!p2.getText().toString().equals("")) {
+                p2Name = p2.getText().toString();
+            }
+            setName();
+            dialog.dismiss();
+        });
+
+        dialog.create();
+        dialog.show();
     }
 
     private void findId() {
@@ -68,12 +104,16 @@ public class MultiActivity extends AppCompatActivity {
         you = findViewById(R.id.you);
         o = findViewById(R.id.o);
         x = findViewById(R.id.x);
+        player1 = findViewById(R.id.player_1);
+        player2 = findViewById(R.id.player_2);
         com = findViewById(R.id.com);
         lin1 = findViewById(R.id.lin1);
         lin2 = findViewById(R.id.lin2);
         setDrawable(R.drawable.icon_bg, R.drawable.gray_box);
         txt = new TextView[]{txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
         showAds = true;
+
+
     }
 
     public void cleanCode() {
@@ -165,22 +205,22 @@ public class MultiActivity extends AppCompatActivity {
         int[] tagArray = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
         if (i == 9 && tagFiled != tagArray) {
             showDialogs("Match Draw", "Play Again");
-            img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.replay));
+            img.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.replay));
         }
     }
 
 
     private void dialog(String t) {
         if (t.equals("X")) {
-            showDialogs("Congratulations", "Player 1 is win the match");
+            showDialogs("Congratulations", p1Name + " is win the match");
         } else {
-            showDialogs("Congratulations", "Player 2 is win the match");
+            showDialogs("Congratulations", p2Name + " is win the match");
         }
     }
 
     public void setDrawable(int d1, int d2) {
-        lin1.setBackground(AppCompatResources.getDrawable(this,d1));
-        lin2.setBackground(AppCompatResources.getDrawable(this,d2));
+        lin1.setBackground(AppCompatResources.getDrawable(this, d1));
+        lin2.setBackground(AppCompatResources.getDrawable(this, d2));
     }
 
     public void loadAd() {
@@ -236,7 +276,7 @@ public class MultiActivity extends AppCompatActivity {
             cleanCode();
             dialog.dismiss();
         });
-        img.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.celebration));
+        img.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.celebration));
         TextView text_title = dialog.findViewById(R.id.text_title);
         TextView win_title = dialog.findViewById(R.id.win_txt);
         win_title.setText(win_text);
@@ -248,9 +288,7 @@ public class MultiActivity extends AppCompatActivity {
 
     public void showAd() {
         if (ad != null) {
-            ad.show(this, rewardItem -> {
-                showAds = true;
-            });
+            ad.show(this, rewardItem -> showAds = true);
         }
     }
 }
